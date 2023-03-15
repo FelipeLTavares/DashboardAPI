@@ -1,4 +1,5 @@
 const PostModel = require("../../db/models/Post.js");
+const UserModel = require("../../db/models/User.js");
 const formParser = require("../Utils/handleFormData.js");
 const Cloudinary = require("../../db/cloudinary.js");
 
@@ -42,13 +43,16 @@ class GenericController {
       jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) error = err;
       });
-
       if (error) return res.status(401).json({});
 
       const [fields, files] = await formParser(req);
-      const { text, title } = fields;
+      const { text, title, userId } = fields;
 
-      if (!text || !title) res.status(400);
+      if (!text || !title || !userId) res.status(400);
+
+      const author = await UserModel.findByPk(userId).then((res) =>
+        res.toJSON()
+      );
 
       const uploadData = files.imagem
         ? await Cloudinary.upload(files.imagem[0])
@@ -57,6 +61,8 @@ class GenericController {
       await PostModel.create({
         ...(text ? { text } : {}),
         ...(title ? { title } : {}),
+        ...(author.email ? { authorName: author.email } : {}),
+        ...(author.imageUrl ? { authorPhoto: author.imageUrl } : {}),
         ...(uploadData
           ? { imageUrl: uploadData.url, imagePublicId: uploadData.publicId }
           : {}),

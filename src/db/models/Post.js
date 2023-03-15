@@ -8,9 +8,11 @@ const Post = database.define("posts", {
     type: DataTypes.INTEGER,
   },
   title: DataTypes.CHAR,
-  text: DataTypes.CHAR,
+  text: DataTypes.TEXT,
   imageUrl: DataTypes.STRING,
   imagePublicId: DataTypes.STRING,
+  authorName: DataTypes.STRING,
+  authorPhoto: DataTypes.STRING,
 });
 
 module.exports = Post;
