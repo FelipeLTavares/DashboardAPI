@@ -7,13 +7,13 @@ require("dotenv").config();
 
 class GenericController {
   async Get(req, res) {
-    const token = req.headers["x-access-token"];
-    let error;
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-      if (err) error = err;
-    });
+    // const token = req.headers["x-access-token"];
+    // let error;
+    // jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    //   if (err) error = err;
+    // });
 
-    if (error) return res.status(401).json({});
+    // if (error) return res.status(401).json({});
 
     const { id, image, text, title, limit, offset } = req.query;
 
