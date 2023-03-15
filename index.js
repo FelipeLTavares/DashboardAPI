@@ -3,6 +3,7 @@ const cors = require("cors");
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+require('pg');
 
 const database = require("./src/db/database.js");
 const genericRoutes = require("./src/application/Posts/postRoutes.js");
